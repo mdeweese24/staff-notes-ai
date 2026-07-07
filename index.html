@@ -1,58 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Staff Notes</title>
 
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    margin:0;
-}
-
-.card{
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    width:360px;
-    text-align:center;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
-}
-
-#teacher{
-    font-size:28px;
-    font-weight:bold;
-    margin:25px 0;
-}
-
-button{
-    width:220px;
-    height:220px;
-    border-radius:50%;
-    border:none;
-    background:#d32f2f;
-    color:white;
-    font-size:34px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button.recording{
-    background:#2e7d32;
-}
-
-#status{
-    margin-top:25px;
-    font-size:20px;
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 
 </head>
 
@@ -60,87 +16,18 @@ button.recording{
 
 <div class="card">
 
-<h1>Staff Notes</h1>
+    <h1>Staff Notes</h1>
 
-<div id="teacher">Staff Member</div>
+    <div id="teacher">Loading...</div>
 
-<button id="recordButton">RECORD</button>
+    <button id="recordButton">RECORD</button>
 
-<div id="status">Ready</div>
+    <div id="status">Ready</div>
 
 </div>
 
-<script>
-
-const params = new URLSearchParams(location.search);
-
-document.getElementById("teacher").textContent =
-params.get("teacher") ||
-params.get("staff") ||
-"Staff Member";
-
-let recorder;
-let chunks=[];
-let recording=false;
-
-const button=document.getElementById("recordButton");
-const status=document.getElementById("status");
-
-button.onclick=async()=>{
-
-if(!recording){
-
-try{
-
-const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-
-recorder=new MediaRecorder(stream);
-
-chunks=[];
-
-recorder.ondataavailable=e=>chunks.push(e.data);
-
-recorder.onstop=()=>{
-
-status.textContent="Recording Complete";
-
-const blob=new Blob(chunks,{type:"audio/webm"});
-
-console.log(blob);
-
-};
-
-recorder.start();
-
-recording=true;
-
-button.textContent="STOP";
-
-button.classList.add("recording");
-
-status.textContent="Recording...";
-
-}catch(e){
-
-alert(e.message);
-
-}
-
-}else{
-
-recorder.stop();
-
-recording=false;
-
-button.textContent="RECORD";
-
-button.classList.remove("recording");
-
-}
-
-};
-
-</script>
+<script src="app.js"></script>
 
 </body>
+
 </html>
