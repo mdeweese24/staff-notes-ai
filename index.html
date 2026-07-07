@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Staff Notes</title>
 
 <style>
@@ -20,13 +21,9 @@ body{
     background:white;
     padding:40px;
     border-radius:20px;
-    width:350px;
+    width:360px;
     text-align:center;
-    box-shadow:0 8px 30px rgba(0,0,0,.15);
-}
-
-h1{
-    margin-top:0;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 
 #teacher{
@@ -53,18 +50,19 @@ button.recording{
 
 #status{
     margin-top:25px;
-    color:#555;
+    font-size:20px;
 }
 </style>
 
 </head>
+
 <body>
 
 <div class="card">
 
 <h1>Staff Notes</h1>
 
-<div id="teacher">Loading...</div>
+<div id="teacher">Staff Member</div>
 
 <button id="recordButton">RECORD</button>
 
@@ -74,10 +72,73 @@ button.recording{
 
 <script>
 
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(location.search);
 
 document.getElementById("teacher").textContent =
-params.get("teacher") || params.get("staff") || "Staff Member";
+params.get("teacher") ||
+params.get("staff") ||
+"Staff Member";
+
+let recorder;
+let chunks=[];
+let recording=false;
+
+const button=document.getElementById("recordButton");
+const status=document.getElementById("status");
+
+button.onclick=async()=>{
+
+if(!recording){
+
+try{
+
+const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+
+recorder=new MediaRecorder(stream);
+
+chunks=[];
+
+recorder.ondataavailable=e=>chunks.push(e.data);
+
+recorder.onstop=()=>{
+
+status.textContent="Recording Complete";
+
+const blob=new Blob(chunks,{type:"audio/webm"});
+
+console.log(blob);
+
+};
+
+recorder.start();
+
+recording=true;
+
+button.textContent="STOP";
+
+button.classList.add("recording");
+
+status.textContent="Recording...";
+
+}catch(e){
+
+alert(e.message);
+
+}
+
+}else{
+
+recorder.stop();
+
+recording=false;
+
+button.textContent="RECORD";
+
+button.classList.remove("recording");
+
+}
+
+};
 
 </script>
 
