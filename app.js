@@ -20,6 +20,10 @@ const transcriptBox = document.getElementById("transcript");
 const notesButton = document.getElementById("notesButton");
 const saveButton = document.getElementById("saveButton");
 
+notesButton.onclick = () => {
+    window.location.href = "notes.html";
+};
+
 button.onclick = async () => {
 
     if (!recording) {
@@ -50,7 +54,7 @@ button.onclick = async () => {
 
                 transcriptBox.value = "";
 
-                analyzeButton.disabled = true;
+               notesButton.disabled = false;
                 saveButton.disabled = true;
 
                 try {
@@ -78,7 +82,7 @@ button.onclick = async () => {
 
                         status.textContent = "Transcription complete";
 
-                        analyzeButton.disabled = false;
+                        notesButton.disabled = false;
                         saveButton.disabled = false;
 
                     } else {
