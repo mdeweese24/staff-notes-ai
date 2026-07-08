@@ -17,7 +17,7 @@ const WORKER_URL =
 const button = document.getElementById("recordButton");
 const status = document.getElementById("status");
 const transcriptBox = document.getElementById("transcript");
-const analyzeButton = document.getElementById("analyzeButton");
+const notesButton = document.getElementById("notesButton");
 const saveButton = document.getElementById("saveButton");
 
 button.onclick = async () => {
