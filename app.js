@@ -47,11 +47,17 @@ button.onclick = async () => {
 
                 try {
 
-                   const response = await fetch(WORKER_URL, {
+                   const formData = new FormData();
+
+formData.append(
+    "audio",
+    window.lastRecording,
+    "recording.webm"
+);
+
+const response = await fetch(WORKER_URL, {
     method: "POST",
-    body: JSON.stringify({
-        test: true
-    })
+    body: formData
 });
 
 const result = await response.json();
