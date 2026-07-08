@@ -16,6 +16,9 @@ const WORKER_URL =
 
 const button = document.getElementById("recordButton");
 const status = document.getElementById("status");
+const transcriptBox = document.getElementById("transcript");
+const analyzeButton = document.getElementById("analyzeButton");
+const saveButton = document.getElementById("saveButton");
 
 button.onclick = async () => {
 
@@ -45,6 +48,11 @@ button.onclick = async () => {
 
                 status.textContent = "Transcribing...";
 
+                transcriptBox.value = "";
+
+                analyzeButton.disabled = true;
+                saveButton.disabled = true;
+
                 try {
 
                     const formData = new FormData();
@@ -66,7 +74,12 @@ button.onclick = async () => {
 
                     if (result.success) {
 
-                        status.textContent = result.transcript;
+                        transcriptBox.value = result.transcript;
+
+                        status.textContent = "Transcription complete";
+
+                        analyzeButton.disabled = false;
+                        saveButton.disabled = false;
 
                     } else {
 
@@ -117,7 +130,7 @@ button.onclick = async () => {
         recording = false;
 
         button.textContent = "RECORD";
-        button.classList.remove("recording");
+button.classList.remove("recording");
 
     }
 
