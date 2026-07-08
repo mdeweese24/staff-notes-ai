@@ -135,3 +135,40 @@ button.classList.remove("recording");
     }
 
 };
+saveButton.onclick = async () => {
+
+    status.textContent = "Saving note...";
+
+    try {
+
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                action: "save",
+                staffId: params.get("staff") || "",
+                staffName: document.getElementById("teacher").textContent,
+                transcript: transcriptBox.value,
+                noteType: "General"
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            status.textContent = "Note saved.";
+        } else {
+            status.textContent = "Save failed.";
+            console.log(result);
+        }
+
+    } catch (err) {
+
+        console.error(err);
+        status.textContent = "Save failed.";
+
+    }
+
+};
