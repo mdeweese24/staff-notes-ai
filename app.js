@@ -47,19 +47,15 @@ button.onclick = async () => {
 
                 try {
 
-                    const response = await fetch(APPS_SCRIPT_URL,{
-                        method:"POST",
-                        headers:{
-                            "Content-Type":"application/json"
-                        },
-                        body:JSON.stringify({
-                            test:true
-                        })
-                    });
+                    await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
+        test: true
+    })
+});
 
-                    const result = await response.json();
-
-                    status.textContent = result.message;
+status.textContent = "Request sent";
 
                     console.log(result);
 
