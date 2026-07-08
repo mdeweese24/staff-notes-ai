@@ -11,8 +11,8 @@ let recording = false;
 let timer;
 let seconds = 0;
 
-const APPS_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwOoA3jK185itJ4OtevMmEJskwWGWccW15dte-ymMX-km4ntigkQZ7PZBOccdGTP0XA/exec";
+const WORKER_URL =
+"https://tiny-cake-5c51.mdeweese.workers.dev";
 
 const button = document.getElementById("recordButton");
 const status = document.getElementById("status");
