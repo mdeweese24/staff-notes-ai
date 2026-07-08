@@ -72,13 +72,15 @@ searchBox.addEventListener("input", () => {
 
     const search = searchBox.value.toLowerCase();
 
-    const filtered = allNotes.filter(note =>
+ const filtered = allNotes.filter(note => {
 
-        (note.StaffName || "").toLowerCase().includes(search) ||
+    const staffName = String(note.StaffName || "").toLowerCase();
+    const transcript = String(note.Transcript || "").toLowerCase();
 
-        (note.Transcript || "").toLowerCase().includes(search)
+    return staffName.includes(search) ||
+           transcript.includes(search);
 
-    );
+});
 
     displayNotes(filtered);
 
