@@ -46,10 +46,9 @@ button.onclick = async () => {
 
                 clearInterval(timer);
 
-                const audioBlob = new Blob(chunks, {
-                    type: "audio/webm"
-                });
-                console.log("Blob size:", audioBlob.size);
+               const audioBlob = new Blob(chunks);
+
+console.log("Blob size:", audioBlob.size);
 console.log("Blob type:", audioBlob.type);
 
                 status.textContent = "Transcribing...";
@@ -104,8 +103,9 @@ console.log("Blob type:", audioBlob.type);
                 }
 
             };
+console.log("Recorder MIME type:", recorder.mimeType);
 
-            recorder.start();
+recorder.start();
 
             recording = true;
 
