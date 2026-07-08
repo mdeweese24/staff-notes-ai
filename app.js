@@ -49,6 +49,8 @@ button.onclick = async () => {
                 const audioBlob = new Blob(chunks, {
                     type: "audio/webm"
                 });
+                console.log("Blob size:", audioBlob.size);
+console.log("Blob type:", audioBlob.type);
 
                 status.textContent = "Transcribing...";
 
