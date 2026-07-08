@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Staff Notes</title>
+<title>Staff Notes AI</title>
 
 <link rel="stylesheet" href="styles.css">
 
@@ -16,13 +16,36 @@
 
 <div class="card">
 
-    <h1>Staff Notes</h1>
+    <h1>Staff Notes AI</h1>
 
     <div id="teacher">Loading...</div>
 
     <button id="recordButton">RECORD</button>
 
     <div id="status">Ready</div>
+
+    <div class="section">
+
+        <h2>Transcript</h2>
+
+        <textarea
+            id="transcript"
+            placeholder="Your transcript will appear here..."
+            spellcheck="true"></textarea>
+
+    </div>
+
+    <div class="buttonRow">
+
+        <button id="analyzeButton" disabled>
+            Analyze
+        </button>
+
+        <button id="saveButton" disabled>
+            Save Observation
+        </button>
+
+    </div>
 
 </div>
 
