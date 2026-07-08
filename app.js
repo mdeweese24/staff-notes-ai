@@ -43,9 +43,7 @@ button.onclick = async () => {
                     type: "audio/webm"
                 });
 
-                window.lastRecording = audioBlob;
-
-                status.textContent = "Uploading...";
+                status.textContent = "Transcribing...";
 
                 try {
 
@@ -53,7 +51,7 @@ button.onclick = async () => {
 
                     formData.append(
                         "audio",
-                        window.lastRecording,
+                        audioBlob,
                         "recording.webm"
                     );
 
@@ -68,13 +66,12 @@ button.onclick = async () => {
 
                     if (result.success) {
 
-                        status.textContent =
-                            `Audio received (${result.fileSize} bytes)`;
+                        status.textContent = result.transcript;
 
                     } else {
 
                         status.textContent =
-                            "Worker reported an error.";
+                            "Error: " + (result.error || "Unknown error");
 
                     }
 
