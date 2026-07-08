@@ -176,3 +176,17 @@ saveButton.onclick = async () => {
     console.log("Save disabled:", saveButton.disabled);
 
 } else {
+
+    status.textContent = "Save failed.";
+    console.log(result);
+
+}
+
+} catch (err) {
+
+    console.error(err);
+    status.textContent = "Save failed.";
+
+}
+
+};
