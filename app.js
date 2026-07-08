@@ -47,15 +47,16 @@ button.onclick = async () => {
 
                 try {
 
-                    await fetch(APPS_SCRIPT_URL, {
+                   const response = await fetch(WORKER_URL, {
     method: "POST",
-    mode: "no-cors",
     body: JSON.stringify({
         test: true
     })
 });
 
-status.textContent = "Request sent";
+const result = await response.json();
+
+status.textContent = result.message;
 
                     console.log(result);
 
