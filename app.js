@@ -62,11 +62,11 @@ console.log("Blob type:", audioBlob.type);
 
                     const formData = new FormData();
 
-                    formData.append(
-                        "audio",
-                        audioBlob,
-                        "recording.webm"
-                    );
+                  formData.append(
+    "audio",
+    audioBlob,
+    "recording"
+);
 
                     const response = await fetch(WORKER_URL, {
                         method: "POST",
