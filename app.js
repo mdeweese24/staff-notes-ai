@@ -8,6 +8,8 @@ document.getElementById("teacher").textContent =
 let recorder;
 let chunks = [];
 let recording = false;
+let timer;
+let seconds = 0;
 
 const button = document.getElementById("recordButton");
 const status = document.getElementById("status");
@@ -26,11 +28,11 @@ button.onclick = async () => {
 
             chunks = [];
 
-            recorder.ondataavailable = e => {
-                chunks.push(e.data);
-            };
+            recorder.ondataavailable = e => chunks.push(e.data);
 
             recorder.onstop = () => {
+
+                clearInterval(timer);
 
                 const audioBlob = new Blob(chunks, {
                     type: "audio/webm"
@@ -38,7 +40,8 @@ button.onclick = async () => {
 
                 window.lastRecording = audioBlob;
 
-                status.textContent = "Recording Complete";
+                status.textContent =
+                    "Recording Complete (" + seconds + " sec)";
 
                 console.log(audioBlob);
 
@@ -47,11 +50,16 @@ button.onclick = async () => {
             recorder.start();
 
             recording = true;
+            seconds = 0;
+
+            timer = setInterval(() => {
+                seconds++;
+                status.textContent =
+                    "Recording... " + seconds + " sec";
+            }, 1000);
 
             button.textContent = "STOP";
             button.classList.add("recording");
-
-            status.textContent = "Recording...";
 
         } catch (err) {
 
