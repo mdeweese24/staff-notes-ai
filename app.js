@@ -11,6 +11,9 @@ let recording = false;
 let timer;
 let seconds = 0;
 
+const APPS_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwOoA3jK185itJ4OtevMmEJskwWGWccW15dte-ymMX-km4ntigkQZ7PZBOccdGTP0XA/exec";
+
 const button = document.getElementById("recordButton");
 const status = document.getElementById("status");
 
@@ -30,20 +33,44 @@ button.onclick = async () => {
 
             recorder.ondataavailable = e => chunks.push(e.data);
 
-            recorder.onstop = () => {
+            recorder.onstop = async () => {
 
                 clearInterval(timer);
 
-                const audioBlob = new Blob(chunks, {
-                    type: "audio/webm"
+                const audioBlob = new Blob(chunks,{
+                    type:"audio/webm"
                 });
 
                 window.lastRecording = audioBlob;
 
-                status.textContent =
-                    "Recording Complete (" + seconds + " sec)";
+                status.textContent = "Testing server...";
 
-                console.log(audioBlob);
+                try {
+
+                    const response = await fetch(APPS_SCRIPT_URL,{
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+                        body:JSON.stringify({
+                            test:true
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    status.textContent = result.message;
+
+                    console.log(result);
+
+                } catch(err){
+
+                    console.error(err);
+
+                    status.textContent =
+                    "Server connection failed";
+
+                }
 
             };
 
@@ -52,16 +79,20 @@ button.onclick = async () => {
             recording = true;
             seconds = 0;
 
-            timer = setInterval(() => {
-                seconds++;
-                status.textContent =
-                    "Recording... " + seconds + " sec";
-            }, 1000);
+            timer = setInterval(()=>{
 
-            button.textContent = "STOP";
+                seconds++;
+
+                status.textContent =
+                "Recording... "+seconds+" sec";
+
+            },1000);
+
+            button.textContent="STOP";
             button.classList.add("recording");
 
-        } catch (err) {
+        }
+        catch(err){
 
             alert(err.message);
 
@@ -71,9 +102,9 @@ button.onclick = async () => {
 
         recorder.stop();
 
-        recording = false;
+        recording=false;
 
-        button.textContent = "RECORD";
+        button.textContent="RECORD";
         button.classList.remove("recording");
 
     }
