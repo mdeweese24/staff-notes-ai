@@ -12,7 +12,7 @@ let timer;
 let seconds = 0;
 
 const WORKER_URL =
-"https://tiny-cake-5c51.mdeweese.workers.dev";
+    "https://tiny-cake-5c51.mdeweese.workers.dev";
 
 const button = document.getElementById("recordButton");
 const status = document.getElementById("status");
@@ -31,47 +31,59 @@ button.onclick = async () => {
 
             chunks = [];
 
-            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.ondataavailable = e => {
+                chunks.push(e.data);
+            };
 
             recorder.onstop = async () => {
 
                 clearInterval(timer);
 
-                const audioBlob = new Blob(chunks,{
-                    type:"audio/webm"
+                const audioBlob = new Blob(chunks, {
+                    type: "audio/webm"
                 });
 
                 window.lastRecording = audioBlob;
 
-                status.textContent = "Testing server...";
+                status.textContent = "Uploading...";
 
                 try {
 
-                   const formData = new FormData();
+                    const formData = new FormData();
 
-formData.append(
-    "audio",
-    window.lastRecording,
-    "recording.webm"
-);
+                    formData.append(
+                        "audio",
+                        window.lastRecording,
+                        "recording.webm"
+                    );
 
-const response = await fetch(WORKER_URL, {
-    method: "POST",
-    body: formData
-});
+                    const response = await fetch(WORKER_URL, {
+                        method: "POST",
+                        body: formData
+                    });
 
-const result = await response.json();
-
-status.textContent = result.message;
+                    const result = await response.json();
 
                     console.log(result);
 
-                } catch(err){
+                    if (result.success) {
+
+                        status.textContent =
+                            `Audio received (${result.fileSize} bytes)`;
+
+                    } else {
+
+                        status.textContent =
+                            "Worker reported an error.";
+
+                    }
+
+                } catch (err) {
 
                     console.error(err);
 
                     status.textContent =
-                    "Server connection failed";
+                        "Server connection failed";
 
                 }
 
@@ -80,22 +92,22 @@ status.textContent = result.message;
             recorder.start();
 
             recording = true;
+
             seconds = 0;
 
-            timer = setInterval(()=>{
+            timer = setInterval(() => {
 
                 seconds++;
 
                 status.textContent =
-                "Recording... "+seconds+" sec";
+                    `Recording... ${seconds} sec`;
 
-            },1000);
+            }, 1000);
 
-            button.textContent="STOP";
+            button.textContent = "STOP";
             button.classList.add("recording");
 
-        }
-        catch(err){
+        } catch (err) {
 
             alert(err.message);
 
@@ -105,9 +117,9 @@ status.textContent = result.message;
 
         recorder.stop();
 
-        recording=false;
+        recording = false;
 
-        button.textContent="RECORD";
+        button.textContent = "RECORD";
         button.classList.remove("recording");
 
     }
