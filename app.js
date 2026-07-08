@@ -157,9 +157,16 @@ saveButton.onclick = async () => {
 
         const result = await response.json();
 
-        if (result.success) {
-            status.textContent = "Note saved.";
-        } else {
+     if (result.success) {
+
+    status.textContent = "✓ Note saved!";
+
+    transcriptBox.value = "";
+
+    analyzeButton.disabled = true;
+    saveButton.disabled = true;
+
+} else {
             status.textContent = "Save failed.";
             console.log(result);
         }
