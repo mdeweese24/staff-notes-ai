@@ -105,7 +105,7 @@ console.log("Blob type:", audioBlob.type);
             };
 console.log("Recorder MIME type:", recorder.mimeType);
 
-recorder.start();
+recorder.start(1000);
 
             recording = true;
 
