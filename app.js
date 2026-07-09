@@ -46,32 +46,35 @@ button.onclick = async () => {
 
                 clearInterval(timer);
 
-               const audioBlob = new Blob(chunks);
+                const audioBlob = new Blob(chunks, {
+                    type: recorder.mimeType || "audio/webm"
+                });
 
-console.log("Blob size:", audioBlob.size);
-console.log("Blob type:", audioBlob.type);
+                console.log("Recorder MIME:", recorder.mimeType);
+                console.log("Blob size:", audioBlob.size);
+                console.log("Blob type:", audioBlob.type);
 
-status.textContent =
-    `Type: ${audioBlob.type || "none"} | Size: ${audioBlob.size}`;
+                status.textContent =
+                    `Type: ${audioBlob.type || "none"} | Size: ${audioBlob.size}`;
 
-await new Promise(resolve => setTimeout(resolve, 3000));
+                await new Promise(resolve => setTimeout(resolve, 3000));
 
-status.textContent = "Transcribing...";
+                status.textContent = "Transcribing...";
 
                 transcriptBox.value = "";
 
-               notesButton.disabled = false;
+                notesButton.disabled = false;
                 saveButton.disabled = true;
 
                 try {
 
                     const formData = new FormData();
 
-         formData.append(
-    "audio",
-    audioBlob,
-    "recording.webm"
-);     
+                    formData.append(
+                        "audio",
+                        audioBlob,
+                        "recording.webm"
+                    );
 
                     const response = await fetch(WORKER_URL, {
                         method: "POST",
@@ -108,9 +111,10 @@ status.textContent = "Transcribing...";
                 }
 
             };
-console.log("Recorder MIME type:", recorder.mimeType);
 
-recorder.start(1000);
+            console.log("Recorder MIME type:", recorder.mimeType);
+
+            recorder.start(1000);
 
             recording = true;
 
@@ -141,11 +145,12 @@ recorder.start(1000);
         recording = false;
 
         button.textContent = "RECORD";
-button.classList.remove("recording");
+        button.classList.remove("recording");
 
     }
 
 };
+
 saveButton.onclick = async () => {
 
     status.textContent = "Saving note...";
@@ -168,36 +173,28 @@ saveButton.onclick = async () => {
 
         const result = await response.json();
 
-  if (result.success) {
+        if (result.success) {
 
-    console.log("Clearing transcript...");
+            console.log("Clearing transcript...");
 
-    console.log(transcriptBox);
+            transcriptBox.value = "";
 
-    transcriptBox.value = "";
+            status.textContent = "✓ Note saved!";
 
-    console.log("Transcript after clear:", transcriptBox.value);
+            saveButton.disabled = true;
 
-    status.textContent = "✓ Note saved!";
+        } else {
 
+            status.textContent = "Save failed.";
+            console.log(result);
 
-    saveButton.disabled = true;
+        }
 
-   
-    console.log("Save disabled:", saveButton.disabled);
+    } catch (err) {
 
-} else {
+        console.error(err);
+        status.textContent = "Save failed.";
 
-    status.textContent = "Save failed.";
-    console.log(result);
-
-}
-
-} catch (err) {
-
-    console.error(err);
-    status.textContent = "Save failed.";
-
-}
+    }
 
 };
