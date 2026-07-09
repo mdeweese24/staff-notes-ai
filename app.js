@@ -34,7 +34,28 @@ button.onclick = async () => {
                 audio: true
             });
 
-            recorder = new MediaRecorder(stream);
+const preferredTypes = [
+    "audio/webm;codecs=opus",
+    "audio/webm",
+    "audio/mp4",
+    "audio/mp4;codecs=mp4a.40.2",
+    "audio/mpeg"
+];
+
+let selectedType = "";
+
+for (const type of preferredTypes) {
+    if (MediaRecorder.isTypeSupported(type)) {
+        selectedType = type;
+        break;
+    }
+}
+
+console.log("Selected MIME:", selectedType || "default");
+
+recorder = selectedType
+    ? new MediaRecorder(stream, { mimeType: selectedType })
+    : new MediaRecorder(stream);
 
             chunks = [];
 
