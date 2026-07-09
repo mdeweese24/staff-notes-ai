@@ -51,7 +51,12 @@ button.onclick = async () => {
 console.log("Blob size:", audioBlob.size);
 console.log("Blob type:", audioBlob.type);
 
-                status.textContent = "Transcribing...";
+status.textContent =
+    `Type: ${audioBlob.type || "none"} | Size: ${audioBlob.size}`;
+
+await new Promise(resolve => setTimeout(resolve, 3000));
+
+status.textContent = "Transcribing...";
 
                 transcriptBox.value = "";
 
