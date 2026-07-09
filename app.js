@@ -175,10 +175,10 @@ saveButton.onclick = async () => {
 
     status.textContent = "✓ Note saved!";
 
-    analyzeButton.disabled = true;
+
     saveButton.disabled = true;
 
-    console.log("Analyze disabled:", analyzeButton.disabled);
+   
     console.log("Save disabled:", saveButton.disabled);
 
 } else {
